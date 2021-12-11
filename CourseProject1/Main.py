@@ -1,4 +1,6 @@
 import os
+from builtins import sorted
+
 import requests
 import json
 from pprint import pprint
@@ -61,6 +63,7 @@ if __name__ == '__main__':
     settings = _get_settings()
     print(f'Настройки получены. Запрашиваю данные.\n')
     data = get_photo_data(settings['vk_user_id'], settings['vk_token'])
+    pprint(data["response"]["items"])
     count_photo = data['response']['count']
     print(f'Получено {count_photo} фотографий.\n')
 
@@ -73,7 +76,7 @@ if __name__ == '__main__':
     album = {}
     for photos in data["response"]["items"]:
         photo_name =  get_photo_name(f"{photos['likes']['count']}.jpg", photos['date'], album)
-        photo = photos["sizes"][-1]
+        photo = sorted(photos["sizes"],key=lambda x: x['type'])[-1]
         url = photo["url"]
         album[photo_name] = {'photo_name':photo_name, 'size':photo["type"], 'url':photo["url"]}
         bar.next()
@@ -81,6 +84,7 @@ if __name__ == '__main__':
 
     bar.finish()
 
+    pprint(album)
     print('\n',f'Данные обработаны. Загружаю на Yndex disk\n')
 
     y_d = yadisk.YaDisk('','',settings['ya_token'])
