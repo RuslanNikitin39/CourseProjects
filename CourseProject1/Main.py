@@ -111,10 +111,10 @@ if __name__ == '__main__':
     print('Загрузка фото на диск\n')
 
     list_json = []
-    for filename in sorted(album.items())[:int(count_photo_get)]:
-        result = y_d.upload_url(filename[1]["url"], f'{path_to_file}/{filename[1]["photo_name"]}')
-        list_json.append({"file_name": filename[1]["photo_name"], "size": filename[1]["size"]})
-        print(f'Добавлен файл {path_to_file}/{filename[1]["photo_name"]}.')
+    for filename, properties in sorted(album.items())[:int(count_photo_get)]:
+        result = y_d.upload_url(properties["url"], f'{path_to_file}/{filename}')
+        list_json.append({"file_name": filename, "size": properties["size"]})
+        print(f'Добавлен файл {path_to_file}/{filename}.')
 
     path = os.path.join(os.getcwd(), 'result.json')
     with open(path, 'w', encoding='utf-8') as w_file:
