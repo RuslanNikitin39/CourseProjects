@@ -30,9 +30,7 @@ class YandexDisk:
         up_url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
         params = {'url': url,'path': file_path, 'disable_redirects': True}
         response = requests.post(up_url, headers=self.get_headers(), params=params)
-        response.raise_for_status()
-        if response.status_code == 202:
-            return response
+        return response
 
     def mkdir(self, path: str):
         """Создание папки. path: Путь к создаваемой папке."""
