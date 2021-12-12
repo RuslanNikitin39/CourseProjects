@@ -1,10 +1,10 @@
 import os
 from builtins import sorted
-
 import requests
 import json
 from pprint import pprint
 import yadisk
+from ya_disk import YandexDisk
 import time
 from datetime import datetime
 from progress.bar import IncrementalBar
@@ -63,7 +63,6 @@ if __name__ == '__main__':
     settings = _get_settings()
     print(f'Настройки получены. Запрашиваю данные.\n')
     data = get_photo_data(settings['vk_user_id'], settings['vk_token'])
-    pprint(data["response"]["items"])
     count_photo = data['response']['count']
     print(f'Получено {count_photo} фотографий.\n')
 
@@ -84,10 +83,12 @@ if __name__ == '__main__':
 
     bar.finish()
 
-    pprint(album)
+    # pprint(album)
     print('\n',f'Данные обработаны. Загружаю на Yndex disk\n')
 
-    y_d = yadisk.YaDisk('','',settings['ya_token'])
+    # y_d = yadisk.YaDisk('','',settings['ya_token'])
+
+    y_d = YandexDisk(settings['ya_token'])
 
     # print(settings['ya_token'])
     # print(y_d.check_token())
