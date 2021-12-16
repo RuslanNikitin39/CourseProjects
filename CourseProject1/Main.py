@@ -11,7 +11,7 @@ from progress.bar import IncrementalBar
 
 def _get_settings():
     """ Формат записей настроек см. в файле token1.txt"""
-    path = os.path.join(os.getcwd(), 'token.txt')
+    path = os.path.join(os.getcwd(), 'token2.txt')
     t_dict = {}
     if os.path.isfile(path):
         with open(path, 'r') as file_object:
@@ -27,11 +27,12 @@ def _get_settings():
     return t_dict
 
 def get_photo_data(vk_user_id, vk_token):
-    """ у меня на стене ничего нет, получил через photos.getAll все фото и взял оттуда id альбома"""
+    """ Получим фото с профиля"""
     api = requests.get("https://api.vk.com/method/photos.get", params={
         'owner_id' : vk_user_id,
         'access_token' : vk_token,
-        'album_id' : '281897303',
+        'album_id': 'profile' ,
+        # 'album_id' : '281897303',
         'extended' : 1,
         'offset' : 0,
         'photo_size' : 0,
@@ -62,6 +63,7 @@ if __name__ == '__main__':
     print(f'Поиск файла настроек.\n')
     settings = _get_settings()
     print(f'Настройки получены. Запрашиваю данные.\n')
+    # albums = get_photo_albums(settings['vk_user_id'], settings['vk_token'])
     data = get_photo_data(settings['vk_user_id'], settings['vk_token'])
     count_photo = data['response']['count']
     print(f'Получено {count_photo} фотографий.\n')
@@ -100,6 +102,7 @@ if __name__ == '__main__':
     if not y_d.exists(path_to_file):
         y_d.mkdir(path_to_file)
 
+    count_photo_get = count_photo
     get_question = True
     while get_question:
         count_photo_get = input('Введите количество фотографий, которое хотите сохранить (0 - отмена): \n')
