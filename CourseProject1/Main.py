@@ -1,5 +1,5 @@
 import os
-from builtins import sorted
+from builtins import sorted, type
 import requests
 import json
 from pprint import pprint
@@ -11,7 +11,7 @@ from progress.bar import IncrementalBar
 
 def _get_settings():
     """ Формат записей настроек см. в файле token1.txt"""
-    path = os.path.join(os.getcwd(), 'token2.txt')
+    path = os.path.join(os.getcwd(), 'token.txt')
     t_dict = {}
     if os.path.isfile(path):
         with open(path, 'r') as file_object:
@@ -38,7 +38,10 @@ def get_photo_data(vk_user_id, vk_token):
         'photo_size' : 0,
         'v' : 5.103
     })
-    return api.json()
+    if api.status_code == 200:
+        return api.json()
+    else:
+        return api.status_code
 
 def get_photo_name(photo_name, photo_date, result_dict):
     """Нужна уникальность, есть фото без лайков, залитые в одно время,
@@ -59,7 +62,6 @@ def get_photo_name(photo_name, photo_date, result_dict):
 
 
 if __name__ == '__main__':
-
     print(f'Поиск файла настроек.\n')
     settings = _get_settings()
     print(f'Настройки получены. Запрашиваю данные.\n')
